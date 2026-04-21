@@ -1,20 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"errors"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-func Addition() {
-	
+func getOptions(scanner *bufio.Scanner) (float64, float64, error) {
+	fmt.Println()
+	fmt.Print("enter 1st number: ")
+	scanner.Scan()
+	n1, err1 := strconv.ParseFloat(scanner.Text(), 64)
+	fmt.Print("enter 2nd number: ")
+	scanner.Scan()
+	n2, err2 := strconv.ParseFloat(scanner.Text(), 64)
+	if err1 != nil || err2 != nil {
+		return 0, 0, errors.New("invalid number. please try again!")
+	}
+	return n1, n2, nil
 }
 
 func main() {
 	var opt string
-	var n1 string
-	var n2 string
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Println("              **** calculator-cli ****              ")
@@ -30,81 +39,50 @@ func main() {
 		opt = scanner.Text()
 		switch opt {
 			case "1":
-				fmt.Println()
-				fmt.Print("enter 1st number: ")
-				scanner.Scan()
-				n1 = scanner.Text()
-				fmt.Print("enter 2nd number: ")
-				scanner.Scan()
-				n2 = scanner.Text()
-				floatN1, err := strconv.ParseFloat(n1, 64)
+				num1, num2, err := getOptions(scanner)
+				sum := num1 + num2
 				if err != nil {
-					fmt.Println("invalid number. please try again!")
+					fmt.Println("error:", err)
+					fmt.Println()
+				} else {
+					fmt.Println()
+					fmt.Printf("result: %.4f\n\n", sum)
 				}
-				floatN2, err := strconv.ParseFloat(n2, 64)
-				if err != nil {
-					fmt.Println("invalid number. please try again!")
-				}
-				sum := floatN1 + floatN2
-				fmt.Println()
-				fmt.Printf("result: %.4f\n\n", sum)
 			case "2":
-				fmt.Println()
-				fmt.Print("enter 1st number: ")
-				scanner.Scan()
-				n1 = scanner.Text()
-				fmt.Print("enter 2nd number: ")
-				scanner.Scan()
-				n2 = scanner.Text()
-				floatN1, err := strconv.ParseFloat(n1, 64)
+				num1, num2, err := getOptions(scanner)
+				diff := num1 - num2
 				if err != nil {
-					fmt.Println("invalid number. please try again!")
+					fmt.Println("error:", err)
+					fmt.Println()
+				} else {
+					fmt.Println()
+					fmt.Printf("result: %.4f\n\n", diff)
 				}
-				floatN2, err := strconv.ParseFloat(n2, 64)
-				if err != nil {
-					fmt.Println("invalid number. please try again!")
-				}
-				sub := floatN1 - floatN2
-				fmt.Println()
-				fmt.Printf("result: %.4f\n\n", sub)
 			case "3":
-				fmt.Println()
-				fmt.Print("enter 1st number: ")
-				scanner.Scan()
-				n1 = scanner.Text()
-				fmt.Print("enter 2nd number: ")
-				scanner.Scan()
-				n2 = scanner.Text()
-				floatN1, err := strconv.ParseFloat(n1, 64)
+				num1, num2, err := getOptions(scanner)
+				mul := num1 * num2
 				if err != nil {
-					fmt.Println("invalid number. please try again!")
+					fmt.Println("error:", err)
+					fmt.Println()
+				} else {
+					fmt.Println()
+					fmt.Printf("result: %.4f\n\n", mul)
 				}
-				floatN2, err := strconv.ParseFloat(n2, 64)
-				if err != nil {
-					fmt.Println("invalid number. please try again!")
-				}
-				mul := floatN1 * floatN2
-				fmt.Println()
-				fmt.Printf("result: %.4f\n\n", mul)
 			case "4":
-				fmt.Println()
-				fmt.Print("enter 1st number: ")
-				scanner.Scan()
-				n1 = scanner.Text()
-				fmt.Print("enter 2nd number: ")
-				scanner.Scan()
-				n2 = scanner.Text()
-				floatN1, err := strconv.ParseFloat(n1, 64)
-				if err != nil {
-					fmt.Println("invalid number. please try again!")
+				num1, num2, err := getOptions(scanner)
+				if num2 == float64(0) {
+					fmt.Println("denominator cannot be zero number. please try again!")
+					fmt.Println()
+				} else {
+					div := num1 / num2
+					if err != nil {
+						fmt.Println("error:", err)
+						fmt.Println()
+					} else {
+						fmt.Println()
+						fmt.Printf("result: %.4f\n\n", div)
+					}
 				}
-				floatN2, err := strconv.ParseFloat(n2, 64)
-				if err != nil {
-					fmt.Println("invalid number. please try again!")
-				}
-				div := floatN1 / floatN2
-				fmt.Println()
-				fmt.Printf("result: %.4f\n\n", div)
 			case "q", "Q":
 				return
 			default :
